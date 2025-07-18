@@ -1,4 +1,4 @@
-# Use an official Python runtime as a parent image
+# Base image with Python and TensorFlow (CPU version)
 FROM python:3.10-slim
 
 # Set environment variables
@@ -11,20 +11,21 @@ WORKDIR /app
 # Install system dependencies
 RUN apt-get update && apt-get install -y \
     build-essential \
-    libgl1-mesa-glx \
     libglib2.0-0 \
-    curl \
+    libsm6 \
+    libxext6 \
+    libxrender-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Python dependencies
-COPY requirements.txt /app/
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# Copy requirements and install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy project
-COPY . /app/
+# Copy project files
+COPY . .
 
-# Expose the port Flask runs on
-EXPOSE 5001
+# Expose the port Render or other platforms will bind to
+EXPOSE 10000
 
-# Run the application
-CMD ["python", "manual.py"]
+# Start the app using gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:10000", "manual:app"]
