@@ -1,7 +1,6 @@
 Flask
-flask-cors
+Flask-Cors
 numpy
-pandas
-scikit-learn
-pymongo
-gunicorn
+Pillow
+tensorflow
+requests
