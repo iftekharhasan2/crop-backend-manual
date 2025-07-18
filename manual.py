@@ -385,5 +385,6 @@ def api_crop_manuals():
 # Example control functions (day01, day02, etc.) and center() would be defined here as in original file.
 # For brevity, they are assumed to be already defined.
 
-if __name__ == '__main__':
-    app.run(port=5001)
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=int(os.environ.get("PORT", 5000)))
+
